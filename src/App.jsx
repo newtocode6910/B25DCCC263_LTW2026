@@ -18,6 +18,15 @@ function App() {
   
   const [playerName, setPlayerName] = useState("");
 
+  const [history, setHistory] = useState(() => {
+    const saved = localStorage.getItem('ltw_rcv_history');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ltw_rcv_history', JSON.stringify(history));
+  }, [history]);
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -39,17 +48,17 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home playerName={playerName} setPlayerName={setPlayerName} />} />
+        <Route index element={<Home playerName={playerName} setPlayerName={setPlayerName} history={history} />} />
         
         <Route 
           path="play" 
           element={
-            playerName ? <Play playerName={playerName} questions={questions} /> : <Navigate to="/" replace />
+            playerName ? <Play playerName={playerName} questions={questions} setHistory={setHistory} /> : <Navigate to="/" replace />
           } 
         />
         
         <Route path="result" element={<Result />} />
-        <Route path="history" element={<History />} />
+        <Route path="history" element={<History history={history} setHistory={setHistory} />} />
         <Route path="questions" element={<Questions questions={questions} loading={loading} error={error} />} />
         <Route path="questions/:id" element={<QuestionDetail questions={questions} loading={loading} error={error} />} />
         <Route path="*" element={<NotFound />} />

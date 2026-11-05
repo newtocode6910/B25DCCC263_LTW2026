@@ -174,3 +174,57 @@ th {
   color: #000;
   background-color: #fff;
 }
+.helpers-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.helper-btn {
+  background-color: #ffc107;
+  color: #000;
+  border: 1px solid #ffc107;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.helper-btn:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+  border-color: #dee2e6;
+  cursor: not-allowed;
+}
+
+.helper-btn.active-phao {
+  background-color: #fd7e14;
+  border-color: #fd7e14;
+  color: white;
+}
+
+.score-box.used-phao {
+  background-color: #fd7e14;
+  border-color: #fd7e14;
+  color: white;
+}
+
+.answer-btn.hidden {
+  visibility: hidden;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.history-table th, .history-table td {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: left;
+}
+
+.history-table th {
+  background-color: #f8f9fa;
+}

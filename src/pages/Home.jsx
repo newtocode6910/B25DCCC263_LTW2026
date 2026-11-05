@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Home = ({ playerName, setPlayerName }) => {
+const Home = ({ playerName, setPlayerName, history }) => {
   const [localName, setLocalName] = useState(playerName || "");
   const navigate = useNavigate();
 
@@ -13,9 +13,20 @@ const Home = ({ playerName, setPlayerName }) => {
     }
   };
 
+  const highestScoreRecord = history && history.length > 0 
+    ? [...history].sort((a, b) => b.score - a.score)[0]
+    : null;
+
   return (
     <div>
       <h2>Rung chuông vàng</h2>
+      
+      {highestScoreRecord && (
+        <h4 style={{ color: '#dc3545' }}>
+          Kỷ lục: {highestScoreRecord.score} điểm - {highestScoreRecord.name}
+        </h4>
+      )}
+
       <div style={{ marginBottom: '20px' }}>
         <p><strong>Luật chơi:</strong></p>
         <ul>
