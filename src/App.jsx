@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Layout from './pages/Layout';
@@ -15,6 +15,8 @@ function App() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  
+  const [playerName, setPlayerName] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -26,34 +28,30 @@ function App() {
         setLoading(false);
       })
       .catch((err) => {
-        if (axios.isCancel(err)) {
-          // Bỏ qua không báo lỗi nếu bị hủy request
-          return;
-        }
+        if (axios.isCancel(err)) return;
         setError(true);
         setLoading(false);
       });
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, []);
 
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="play" element={<Play />} />
+        <Route index element={<Home playerName={playerName} setPlayerName={setPlayerName} />} />
+        
+        <Route 
+          path="play" 
+          element={
+            playerName ? <Play playerName={playerName} questions={questions} /> : <Navigate to="/" replace />
+          } 
+        />
+        
         <Route path="result" element={<Result />} />
         <Route path="history" element={<History />} />
-        <Route
-          path="questions"
-          element={<Questions questions={questions} loading={loading} error={error} />}
-        />
-        <Route
-          path="questions/:id"
-          element={<QuestionDetail questions={questions} loading={loading} error={error} />}
-        />
+        <Route path="questions" element={<Questions questions={questions} loading={loading} error={error} />} />
+        <Route path="questions/:id" element={<QuestionDetail questions={questions} loading={loading} error={error} />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
